@@ -14,7 +14,17 @@ class HomePage extends StatelessWidget {
           centerTitle: false,
           title: Text('Peliculas en cine'),
           backgroundColor: Colors.indigoAccent,
-          actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: null,
+                  delegate: null,
+                );
+              },
+            )
+          ],
         ),
         body: Container(
           child: Column(
