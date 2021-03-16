@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/src/models/actores_model.dart';
 import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/providers/peliculas_provider.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override
@@ -16,6 +18,8 @@ class PeliculaDetalle extends StatelessWidget {
             ),
             _posterTitulo(context, pelicula),
             _descripcion(pelicula),
+            _descripcion(pelicula),
+            _crearCasting(pelicula),
           ]))
         ],
       ),
@@ -91,6 +95,58 @@ class PeliculaDetalle extends StatelessWidget {
       child: Text(
         pelicula.overview,
         textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _crearCasting(Pelicula pelicula) {
+    final peliProvider = new PeliculasProvider();
+
+    return FutureBuilder(
+        future: peliProvider.getCast(pelicula.id.toString()),
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+          if (snapshot.hasData) {
+            return _crearActoresPageView(snapshot.data);
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+  }
+
+  Widget _crearActoresPageView(List<Actor> actores) {
+    return SizedBox(
+      height: 200.0,
+      child: PageView.builder(
+        controller: PageController(
+          initialPage: 1,
+          viewportFraction: 0.3,
+        ),
+        itemCount: actores.length,
+        itemBuilder: (context, i) => _actorTarjeta(actores[i]),
+      ),
+    );
+  }
+
+  Widget _actorTarjeta(Actor actor) {
+    return Container(
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(100.0),
+            child: FadeInImage(
+              placeholder: AssetImage('assets/img/no-image.jpg'),
+              image: NetworkImage(actor.getFoto()),
+              height: 150.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            actor.name,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }
