@@ -17,13 +17,12 @@ class MovieHorizontal extends StatelessWidget {
     _pageController.addListener(() {
       if (_pageController.position.pixels >=
           _pageController.position.maxScrollExtent - 200) {
-        print('cargar');
         siguientePagina();
       }
     });
 
     return Container(
-      height: _screenSize.height * 0.2,
+      height: _screenSize.height * 0.30,
       child: PageView.builder(
         pageSnapping: false,
         controller: _pageController,
@@ -49,7 +48,7 @@ class MovieHorizontal extends StatelessWidget {
                 image: NetworkImage(pelicula.getPosterImg()),
                 placeholder: AssetImage('assets/img/no-image.jpg'),
                 fit: BoxFit.cover,
-                height: 160.0,
+                height: 120.0,
               ),
             ),
           ),
